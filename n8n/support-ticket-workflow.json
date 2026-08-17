@@ -1,0 +1,155 @@
+{
+  "name": "AI Support Hub - Support Ticket Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "support-ticket",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -288,
+        -32
+      ],
+      "id": "963a8494-3349-472a-b510-dccd324ea918",
+      "name": "Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "77e74f35-4e11-4d90-9e9c-96949f550295",
+              "name": "ticketNumber",
+              "value": "={{ $json.body.ticketNumber }}",
+              "type": "string"
+            },
+            {
+              "id": "d28ba950-52e1-4d74-b623-16378f0eda3b",
+              "name": "conversationId",
+              "value": "={{ $json.body.conversationId }}",
+              "type": "number"
+            },
+            {
+              "id": "3f42fe7f-29ab-4a10-8b04-dc1f602b4d4e",
+              "name": "name",
+              "value": "={{ $json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "d43f451d-960a-4fc8-bc7d-2ea39d9f3a75",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "11bdf459-08ce-4ff7-9800-ad907ef1fd8c",
+              "name": "description",
+              "value": "={{ $json.body.description }}",
+              "type": "string"
+            },
+            {
+              "id": "eee1fc5a-c274-40d6-8bdc-c3425d1228b8",
+              "name": "status",
+              "value": "={{ $json.body.status }}",
+              "type": "string"
+            },
+            {
+              "id": "54dc8090-65df-453a-a3d7-a38b2cade667",
+              "name": "createdAt",
+              "value": "={{ $json.body.createdAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -32,
+        -32
+      ],
+      "id": "462cccb9-dc39-4958-aa33-864969521b05",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "=Ticket de soporte {{ $json.ticketNumber }}",
+        "message": "=<div style=\"margin:0;padding:30px;background-color:#f4f6f8;font-family:Arial,Helvetica,sans-serif;color:#222222;\"><div style=\"max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;\"><div style=\"background-color:#202020;padding:25px 30px;color:#ffffff;\"><h1 style=\"margin:0;font-size:22px;font-weight:600;\">AI Support Hub</h1><p style=\"margin:6px 0 0;font-size:14px;color:#cccccc;\">Soporte inteligente</p></div><div style=\"padding:30px;\"><h2 style=\"margin:0 0 15px;font-size:20px;\">Hola {{ $json.name }} 👋</h2><p style=\"line-height:1.6;color:#555555;\">Tu solicitud de soporte fue registrada correctamente. Nuestro equipo revisará el problema y podrá ponerse en contacto contigo si necesita información adicional.</p><div style=\"margin:25px 0;padding:20px;background-color:#f7f7f7;border-radius:8px;border-left:4px solid #202020;\"><div style=\"font-size:12px;color:#777777;text-transform:uppercase;margin-bottom:5px;\">Número de ticket</div><div style=\"font-size:22px;font-weight:bold;\">{{ $json.ticketNumber }}</div></div><table style=\"width:100%;border-collapse:collapse;margin-top:20px;\"><tr><td style=\"padding:12px 0;border-bottom:1px solid #eeeeee;color:#777777;width:120px;\">Estado</td><td style=\"padding:12px 0;border-bottom:1px solid #eeeeee;font-weight:bold;\">{{ $json.status }}</td></tr><tr><td style=\"padding:12px 0;color:#777777;vertical-align:top;\">Descripción</td><td style=\"padding:12px 0;line-height:1.5;\">{{ $json.description }}</td></tr></table><p style=\"margin-top:30px;line-height:1.6;color:#555555;\">Guarda el número <strong>{{ $json.ticketNumber }}</strong> para futuras consultas sobre tu solicitud.</p></div><div style=\"padding:20px 30px;background-color:#f7f7f7;border-top:1px solid #eeeeee;text-align:center;\"><p style=\"margin:0;color:#888888;font-size:12px;\">Este correo fue generado automáticamente por <strong>AI Support Hub</strong>.</p></div></div></div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        -32
+      ],
+      "id": "2dc6cf27-508c-4539-9c46-ea2fc6ec0951",
+      "name": "Send a message"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"emailSent\": true,\n  \"ticketNumber\": \"{{ $('Edit Fields').item.json.ticketNumber }}\",\n  \"message\": \"Ticket procesado y correo enviado correctamente\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        464,
+        -32
+      ],
+      "id": "09d3ffbd-d33b-4653-b064-881ddbbfcb46",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "nodeGroups": [],
+  "tags": []
+}
