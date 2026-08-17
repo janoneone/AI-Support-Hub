@@ -1,0 +1,8 @@
+IF DB_ID('AISupportHub') IS NULL
+BEGIN
+    CREATE DATABASE AISupportHub;
+END
+GO
+
+USE AISupportHub;
+GO
