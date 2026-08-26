@@ -36,7 +36,7 @@ function App() {
   const [conversations, setConversations] =
     useState<Conversation[]>([]);
 
-  const apiUrl = "https://localhost:7156";
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const loadConversations = async () => {
     try {
