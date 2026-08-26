@@ -37,7 +37,9 @@ function App() {
     useState<Conversation[]>([]);
 
   const apiUrl = import.meta.env.VITE_API_URL;
-
+console.log("MODE:", import.meta.env.MODE);
+console.log("PROD:", import.meta.env.PROD);
+console.log("API URL:", import.meta.env.VITE_API_URL);
   const loadConversations = async () => {
     try {
       const response = await fetch(
