@@ -49,12 +49,17 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
 
 app.UseCors("Frontend");
 
 app.MapControllers();
+
+app.MapGet("/", () => Results.Ok(new
+{
+    service = "AI Support Hub API",
+    status = "running"
+}));
 
 app.Run();
