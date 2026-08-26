@@ -35,7 +35,10 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .AllowAnyOrigin()
+                .WithOrigins(
+                    "http://localhost:5173",
+                    "https://ai-support-hub-ashy.vercel.app"
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
