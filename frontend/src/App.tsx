@@ -36,10 +36,13 @@ function App() {
   const [conversations, setConversations] =
     useState<Conversation[]>([]);
 
-  const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.PROD
+  ? "https://ai-support-hub.onrender.com"
+  : import.meta.env.VITE_API_URL;
+
 console.log("MODE:", import.meta.env.MODE);
 console.log("PROD:", import.meta.env.PROD);
-console.log("API URL:", import.meta.env.VITE_API_URL);
+console.log("API URL:", apiUrl);
 
   const loadConversations = async () => {
     try {
